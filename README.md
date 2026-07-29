@@ -52,3 +52,10 @@ function increment() public {
 constructor(uint256 startingCount) {
     count = startingCount;
 }
+
+### Protecting Functions
+
+```solidity
+function resetCount() public onlyOwner {
+    count = 0;
+}
