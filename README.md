@@ -83,3 +83,10 @@ function deposit() public payable {
     balances[msg.sender] += msg.value;
     totalDeposits += msg.value;
 }
+
+### Custom Error Messages
+
+Clear error messages make debugging much easier:
+
+```solidity
+require(msg.sender == owner, "Only owner can call this function");
