@@ -21,3 +21,10 @@ These are the main reasons I’m focusing on Base.
 - Official documentation  
 
 Getting familiar with the basic setup.
+
+### Adding Increment Function
+
+```solidity
+function increment() public {
+    count += 1;
+}
