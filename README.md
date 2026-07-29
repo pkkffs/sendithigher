@@ -59,3 +59,9 @@ constructor(uint256 startingCount) {
 function resetCount() public onlyOwner {
     count = 0;
 }
+### Renounce Ownership
+
+```solidity
+function renounceOwnership() public onlyOwner {
+    owner = address(0);
+}
