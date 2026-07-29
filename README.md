@@ -45,3 +45,10 @@ function increment() public {
     count += 1;
     emit CountChanged(msg.sender, count);
 }
+
+### Constructor for Counter
+
+```solidity
+constructor(uint256 startingCount) {
+    count = startingCount;
+}
