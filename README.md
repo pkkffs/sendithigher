@@ -35,3 +35,13 @@ function increment() public {
 function decrement() public {
     count -= 1;
 }
+
+### CountChanged Event
+
+```solidity
+event CountChanged(address indexed user, uint256 newCount);
+
+function increment() public {
+    count += 1;
+    emit CountChanged(msg.sender, count);
+}
