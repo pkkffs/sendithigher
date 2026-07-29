@@ -28,3 +28,10 @@ Getting familiar with the basic setup.
 function increment() public {
     count += 1;
 }
+
+### Decrement Function
+
+```solidity
+function decrement() public {
+    count -= 1;
+}
