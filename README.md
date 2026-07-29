@@ -73,3 +73,13 @@ function resetCount() public onlyOwner {
 function renounceOwnership() public onlyOwner {
     owner = address(0);
 }
+
+### Total Deposits Tracking
+
+```solidity
+uint256 public totalDeposits;
+
+function deposit() public payable {
+    balances[msg.sender] += msg.value;
+    totalDeposits += msg.value;
+}
