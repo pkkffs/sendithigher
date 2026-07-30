@@ -206,3 +206,12 @@ function approve(address spender, uint256 amount) public returns (bool) {
 
 ```solidity
 uint8 public decimals = 18;
+
+### Token Constructor
+
+```solidity
+constructor(uint256 initialSupply) {
+    totalSupply = initialSupply;
+    balanceOf[msg.sender] = initialSupply;
+    owner = msg.sender;
+}
