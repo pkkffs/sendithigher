@@ -179,3 +179,10 @@ function checkAccess(uint256 amount) public view returns (bool) {
 function isActive() public view returns (bool) {
     return currentStatus == Status.Active;
 }
+
+### Calling Another Contract
+
+```solidity
+function readValue(address target) public view returns (uint256) {
+    return IExample(target).getValue();
+}
