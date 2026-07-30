@@ -162,3 +162,13 @@ function countDown(uint256 n) public pure returns (uint256) {
     }
     return n;
 }
+
+### Multiple Conditions
+
+```solidity
+function checkAccess(uint256 amount) public view returns (bool) {
+    if (msg.sender == owner && amount > 0) {
+        return true;
+    }
+    return false;
+}
