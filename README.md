@@ -108,3 +108,9 @@ function update() public {
     lastUpdate = block.timestamp;
 }
 
+### Receive Function
+
+```solidity
+receive() external payable {
+    balances[msg.sender] += msg.value;
+}
