@@ -144,3 +144,11 @@ function getContractAddress() public view returns (address) {
 function updateBalance(uint256 newBalance) public {
     users[msg.sender].balance = newBalance;
 }
+
+### Accessing Array Elements
+
+```solidity
+function getUser(uint256 index) public view returns (address) {
+    require(index < userList.length, "Index out of bounds");
+    return userList[index];
+}
