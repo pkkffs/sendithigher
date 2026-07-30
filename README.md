@@ -98,3 +98,13 @@ modifier validAmount(uint256 amount) {
     require(amount > 0, "Amount must be greater than zero");
     _;
 }
+
+### Using block.timestamp
+
+```solidity
+uint256 public lastUpdate;
+
+function update() public {
+    lastUpdate = block.timestamp;
+}
+
