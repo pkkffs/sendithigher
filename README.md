@@ -130,3 +130,10 @@ event FallbackCalled(address sender, uint256 value);
 fallback() external payable {
     emit FallbackCalled(msg.sender, msg.value);
 }
+
+### Contract Address
+
+```solidity
+function getContractAddress() public view returns (address) {
+    return address(this);
+}
