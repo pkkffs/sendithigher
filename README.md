@@ -201,3 +201,8 @@ function approve(address spender, uint256 amount) public returns (bool) {
     allowance[msg.sender][spender] = amount;
     return true;
 }
+
+### Decimals
+
+```solidity
+uint8 public decimals = 18;
