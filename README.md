@@ -172,3 +172,10 @@ function checkAccess(uint256 amount) public view returns (bool) {
     }
     return false;
 }
+
+### Reading Enum Values
+
+```solidity
+function isActive() public view returns (bool) {
+    return currentStatus == Status.Active;
+}
