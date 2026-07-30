@@ -114,3 +114,10 @@ function update() public {
 receive() external payable {
     balances[msg.sender] += msg.value;
 }
+
+### Receive Function
+
+```solidity
+receive() external payable {
+    balances[msg.sender] += msg.value;
+}
