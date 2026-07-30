@@ -186,3 +186,10 @@ function isActive() public view returns (bool) {
 function readValue(address target) public view returns (uint256) {
     return IExample(target).getValue();
 }
+
+### Simple ERC20 Structure
+
+```solidity
+mapping(address => uint256) public balanceOf;
+mapping(address => mapping(address => uint256)) public allowance;
+uint256 public totalSupply;
