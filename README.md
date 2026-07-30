@@ -137,3 +137,10 @@ fallback() external payable {
 function getContractAddress() public view returns (address) {
     return address(this);
 }
+
+### Updating Struct Values
+
+```solidity
+function updateBalance(uint256 newBalance) public {
+    users[msg.sender].balance = newBalance;
+}
