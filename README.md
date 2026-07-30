@@ -152,3 +152,13 @@ function getUser(uint256 index) public view returns (address) {
     require(index < userList.length, "Index out of bounds");
     return userList[index];
 }
+
+### While Loop Example
+
+```solidity
+function countDown(uint256 n) public pure returns (uint256) {
+    while (n > 0) {
+        n--;
+    }
+    return n;
+}
