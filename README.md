@@ -121,3 +121,12 @@ receive() external payable {
 receive() external payable {
     balances[msg.sender] += msg.value;
 }
+
+### Logging in Fallback
+
+```solidity
+event FallbackCalled(address sender, uint256 value);
+
+fallback() external payable {
+    emit FallbackCalled(msg.sender, msg.value);
+}
