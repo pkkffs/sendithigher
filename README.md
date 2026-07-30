@@ -90,3 +90,11 @@ Clear error messages make debugging much easier:
 
 ```solidity
 require(msg.sender == owner, "Only owner can call this function");
+
+### Valid Amount Modifier
+
+```solidity
+modifier validAmount(uint256 amount) {
+    require(amount > 0, "Amount must be greater than zero");
+    _;
+}
