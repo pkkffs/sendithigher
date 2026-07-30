@@ -193,3 +193,11 @@ function readValue(address target) public view returns (uint256) {
 mapping(address => uint256) public balanceOf;
 mapping(address => mapping(address => uint256)) public allowance;
 uint256 public totalSupply;
+
+### Approve Function
+
+```solidity
+function approve(address spender, uint256 amount) public returns (bool) {
+    allowance[msg.sender][spender] = amount;
+    return true;
+}
