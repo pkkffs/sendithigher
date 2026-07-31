@@ -234,3 +234,20 @@ function setTokenURI(uint256 tokenId, string memory uri) public {
     require(ownerOf[tokenId] == msg.sender, "Not the owner");
     tokenURI[tokenId] = uri;
 }
+
+### transferFrom for NFT
+
+```solidity
+function transferFrom(address from, address to, uint256 tokenId) public {
+    require(ownerOf[tokenId] == from, "Wrong owner");
+    require(
+        msg.sender == from || msg.sender == getApproved[tokenId],
+        "Not authorized"
+    );
+
+    ownerOf[tokenId] = to;
+    balanceOf[from] -= 1;
+    balanceOf[to] += 1;
+    delete getApproved[tokenId];
+}
+
