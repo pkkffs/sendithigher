@@ -271,3 +271,14 @@ function mint() public payable {
     balanceOf[msg.sender] += 1;
     nextTokenId++;
 }
+
+### Pause and Unpause Functions
+
+```solidity
+function pause() public onlyOwner {
+    paused = true;
+}
+
+function unpause() public onlyOwner {
+    paused = false;
+}
