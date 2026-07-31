@@ -282,3 +282,10 @@ function pause() public onlyOwner {
 function unpause() public onlyOwner {
     paused = false;
 }
+
+### Remaining Supply
+
+```solidity
+function remainingSupply() public view returns (uint256) {
+    return maxSupply - nextTokenId;
+}
