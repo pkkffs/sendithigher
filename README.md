@@ -215,3 +215,12 @@ constructor(uint256 initialSupply) {
     balanceOf[msg.sender] = initialSupply;
     owner = msg.sender;
 }
+
+### Simple NFT Mint
+
+```solidity
+function mint() public {
+    ownerOf[nextTokenId] = msg.sender;
+    balanceOf[msg.sender] += 1;
+    nextTokenId++;
+}
