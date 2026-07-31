@@ -289,3 +289,10 @@ function unpause() public onlyOwner {
 function remainingSupply() public view returns (uint256) {
     return maxSupply - nextTokenId;
 }
+
+### Set Max Per Transaction
+
+```solidity
+function setMaxPerTx(uint256 newMax) public onlyOwner {
+    maxPerTx = newMax;
+}
