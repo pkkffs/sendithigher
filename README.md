@@ -224,3 +224,13 @@ function mint() public {
     balanceOf[msg.sender] += 1;
     nextTokenId++;
 }
+
+### tokenURI Idea
+
+```solidity
+mapping(uint256 => string) public tokenURI;
+
+function setTokenURI(uint256 tokenId, string memory uri) public {
+    require(ownerOf[tokenId] == msg.sender, "Not the owner");
+    tokenURI[tokenId] = uri;
+}
