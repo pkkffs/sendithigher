@@ -259,3 +259,15 @@ function exists(uint256 tokenId) public view returns (bool) {
     return ownerOf[tokenId] != address(0);
 }
 
+### Max Supply
+
+```solidity
+uint256 public maxSupply = 1000;
+
+function mint() public payable {
+    require(nextTokenId < maxSupply, "Max supply reached");
+    require(msg.value >= mintPrice, "Insufficient payment");
+    ownerOf[nextTokenId] = msg.sender;
+    balanceOf[msg.sender] += 1;
+    nextTokenId++;
+}
