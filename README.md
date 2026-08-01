@@ -378,3 +378,11 @@ function transferFrom(address from, address to, uint256 tokenId) public {
     );
     // rest of the logic
 }
+
+### Prevent Transfer When Locked
+
+```solidity
+function transferFrom(address from, address to, uint256 tokenId) public {
+    require(tokenStatus[tokenId] != TokenStatus.Locked, "Token is locked");
+    // rest of transfer logic
+}
