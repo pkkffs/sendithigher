@@ -311,3 +311,14 @@ modifier onlyMinter(uint256 tokenId) {
     require(originalMinter[tokenId] == msg.sender, "Not the original minter");
     _;
 }
+
+### Max Level
+
+```solidity
+uint256 public maxLevel = 10;
+
+function levelUp(uint256 tokenId) public {
+    require(ownerOf[tokenId] == msg.sender, "Not the owner");
+    require(tokenLevel[tokenId] < maxLevel, "Max level reached");
+    tokenLevel[tokenId] += 1;
+}
