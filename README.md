@@ -386,3 +386,10 @@ function transferFrom(address from, address to, uint256 tokenId) public {
     require(tokenStatus[tokenId] != TokenStatus.Locked, "Token is locked");
     // rest of transfer logic
 }
+
+### Get Token Status
+
+```solidity
+function getTokenStatus(uint256 tokenId) public view returns (TokenStatus) {
+    return tokenStatus[tokenId];
+}
