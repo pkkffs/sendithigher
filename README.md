@@ -365,3 +365,16 @@ function getCollectionInfo() public view returns (
 ) {
     return (name, symbol, nextTokenId, maxSupply);
 }
+
+### Improving Transfer Checks
+
+```solidity
+function transferFrom(address from, address to, uint256 tokenId) public {
+    require(to != address(0), "Cannot transfer to zero address");
+    require(ownerOf[tokenId] == from, "Wrong owner");
+    require(
+        msg.sender == from || msg.sender == getApproved[tokenId],
+        "Not authorized"
+    );
+    // rest of the logic
+}
