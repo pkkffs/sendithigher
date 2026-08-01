@@ -353,3 +353,15 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 - ERC721Enumerable → `0x780e9d63`  
 
 These are standard identifiers.
+
+### Collection Info View
+
+```solidity
+function getCollectionInfo() public view returns (
+    string memory collectionName,
+    string memory collectionSymbol,
+    uint256 minted,
+    uint256 max
+) {
+    return (name, symbol, nextTokenId, maxSupply);
+}
