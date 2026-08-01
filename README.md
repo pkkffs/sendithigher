@@ -322,3 +322,18 @@ function levelUp(uint256 tokenId) public {
     require(tokenLevel[tokenId] < maxLevel, "Max level reached");
     tokenLevel[tokenId] += 1;
 }
+
+### Get Token Stats
+
+```solidity
+function getTokenStats(uint256 tokenId) public view returns (
+    address owner,
+    uint256 level,
+    uint256 exp
+) {
+    return (
+        ownerOf[tokenId],
+        tokenLevel[tokenId],
+        experience[tokenId]
+    );
+}
