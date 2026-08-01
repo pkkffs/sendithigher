@@ -296,3 +296,10 @@ function remainingSupply() public view returns (uint256) {
 function setMaxPerTx(uint256 newMax) public onlyOwner {
     maxPerTx = newMax;
 }
+
+### Get Mint Info
+
+```solidity
+function getMintInfo(uint256 tokenId) public view returns (address owner, uint256 mintedTime) {
+    return (ownerOf[tokenId], mintedAt[tokenId]);
+}
