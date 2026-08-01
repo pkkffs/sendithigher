@@ -401,3 +401,13 @@ function getStakingTime(uint256 tokenId) public view returns (uint256) {
     require(isStaked[tokenId], "Not staked");
     return block.timestamp - stakedAt[tokenId];
 }
+
+### Reward Claimed Event
+
+```solidity
+event RewardClaimed(address indexed user, uint256 indexed tokenId, uint256 amount);
+
+function claimReward(uint256 tokenId) public {
+    // existing logic...
+    emit RewardClaimed(msg.sender, tokenId, reward);
+}
