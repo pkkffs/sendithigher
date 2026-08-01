@@ -303,3 +303,11 @@ function setMaxPerTx(uint256 newMax) public onlyOwner {
 function getMintInfo(uint256 tokenId) public view returns (address owner, uint256 mintedTime) {
     return (ownerOf[tokenId], mintedAt[tokenId]);
 }
+
+### Only Minter Modifier Idea
+
+```solidity
+modifier onlyMinter(uint256 tokenId) {
+    require(originalMinter[tokenId] == msg.sender, "Not the original minter");
+    _;
+}
