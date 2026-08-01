@@ -393,3 +393,11 @@ function transferFrom(address from, address to, uint256 tokenId) public {
 function getTokenStatus(uint256 tokenId) public view returns (TokenStatus) {
     return tokenStatus[tokenId];
 }
+
+### Calculating Staking Time
+
+```solidity
+function getStakingTime(uint256 tokenId) public view returns (uint256) {
+    require(isStaked[tokenId], "Not staked");
+    return block.timestamp - stakedAt[tokenId];
+}
