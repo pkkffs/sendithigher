@@ -345,3 +345,11 @@ To convert `uint256` to `string`, you can use OpenZeppelin’s `Strings` library
 ```solidity
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+### Common Interface IDs
+
+- ERC165 → `0x01ffc9a7`  
+- ERC721 → `0x80ac58cd`  
+- ERC721Metadata → `0x5b5e139f`  
+- ERC721Enumerable → `0x780e9d63`  
+
+These are standard identifiers.
