@@ -337,3 +337,11 @@ function getTokenStats(uint256 tokenId) public view returns (
         experience[tokenId]
     );
 }
+
+### Using Strings Library
+
+To convert `uint256` to `string`, you can use OpenZeppelin’s `Strings` library:
+
+```solidity
+import "@openzeppelin/contracts/utils/Strings.sol";
+
