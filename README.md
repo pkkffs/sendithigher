@@ -411,3 +411,13 @@ function claimReward(uint256 tokenId) public {
     // existing logic...
     emit RewardClaimed(msg.sender, tokenId, reward);
 }
+
+### Reward Configuration Event
+
+```solidity
+event RewardPerDayUpdated(uint256 newReward);
+
+function setRewardPerDay(uint256 newReward) public onlyOwner {
+    rewardPerDay = newReward;
+    emit RewardPerDayUpdated(newReward);
+}
