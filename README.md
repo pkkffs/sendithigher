@@ -421,3 +421,11 @@ function setRewardPerDay(uint256 newReward) public onlyOwner {
     rewardPerDay = newReward;
     emit RewardPerDayUpdated(newReward);
 }
+
+### Can Unstake View
+
+```solidity
+function canUnstake(uint256 tokenId) public view returns (bool) {
+    if (!isStaked[tokenId]) return false;
+    return block.timestamp >= stakedAt[tokenId] + minStakeTime;
+}
