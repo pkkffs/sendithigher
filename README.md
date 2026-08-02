@@ -436,3 +436,10 @@ function canUnstake(uint256 tokenId) public view returns (bool) {
 event EarlyUnstakePenaltyApplied(uint256 indexed tokenId, uint256 penaltyAmount);
 
 // Emit this event when a penalty is applied during unstake
+
+### Set Max Staked Per User
+
+```solidity
+function setMaxStakedPerUser(uint256 newMax) public onlyOwner {
+    maxStakedPerUser = newMax;
+}
