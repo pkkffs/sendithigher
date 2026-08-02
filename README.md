@@ -443,3 +443,10 @@ event EarlyUnstakePenaltyApplied(uint256 indexed tokenId, uint256 penaltyAmount)
 function setMaxStakedPerUser(uint256 newMax) public onlyOwner {
     maxStakedPerUser = newMax;
 }
+
+### Get Staked Tokens Count
+
+```solidity
+function getStakedTokensCount(address user) public view returns (uint256) {
+    return userStakedTokens[user].length;
+}
