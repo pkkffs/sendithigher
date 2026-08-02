@@ -450,3 +450,14 @@ function setMaxStakedPerUser(uint256 newMax) public onlyOwner {
 function getStakedTokensCount(address user) public view returns (uint256) {
     return userStakedTokens[user].length;
 }
+
+### Get Global Stats
+
+```solidity
+function getGlobalStats() public view returns (
+    uint256 minted,
+    uint256 max,
+    uint256 currentlyStaked
+) {
+    return (nextTokenId, maxSupply, totalStaked);
+}
