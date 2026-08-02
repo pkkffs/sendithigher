@@ -429,3 +429,10 @@ function canUnstake(uint256 tokenId) public view returns (bool) {
     if (!isStaked[tokenId]) return false;
     return block.timestamp >= stakedAt[tokenId] + minStakeTime;
 }
+
+### Penalty Applied Event
+
+```solidity
+event EarlyUnstakePenaltyApplied(uint256 indexed tokenId, uint256 penaltyAmount);
+
+// Emit this event when a penalty is applied during unstake
