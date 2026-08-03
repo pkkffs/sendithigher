@@ -461,3 +461,10 @@ function getGlobalStats() public view returns (
 ) {
     return (nextTokenId, maxSupply, totalStaked);
 }
+
+### Rewards Stats Event
+
+```solidity
+event RewardsDistributed(uint256 totalDistributed);
+
+// You can emit this occasionally or after important claims
