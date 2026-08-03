@@ -516,3 +516,11 @@ function setBreedingCost(uint256 newCost) public onlyOwner {
     breedingCost = newCost;
     emit BreedingCostUpdated(newCost);
 }
+
+### Get Attributes
+
+```solidity
+function getAttributes(uint256 tokenId) public view returns (uint8 strength, uint8 agility, uint8 intelligence) {
+    Attributes memory attr = tokenAttributes[tokenId];
+    return (attr.strength, attr.agility, attr.intelligence);
+}
