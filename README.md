@@ -478,3 +478,13 @@ function toggleStakingPause() public onlyOwner {
     stakingPaused = !stakingPaused;
     emit StakingPauseChanged(stakingPaused);
 }
+
+### Checks-Effects-Interactions Pattern
+
+Recommended order inside functions:
+
+1. **Checks** (require statements)  
+2. **Effects** (update state variables)  
+3. **Interactions** (external calls / transfers)  
+
+This greatly reduces reentrancy risks.
