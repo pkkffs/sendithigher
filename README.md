@@ -506,3 +506,13 @@ Ideas to continue improving the contract:
 event Bred(address indexed owner, uint256 parent1, uint256 parent2, uint256 childId);
 
 // Emit after successfully creating the new NFT
+
+### Breeding Cost Event
+
+```solidity
+event BreedingCostUpdated(uint256 newCost);
+
+function setBreedingCost(uint256 newCost) public onlyOwner {
+    breedingCost = newCost;
+    emit BreedingCostUpdated(newCost);
+}
