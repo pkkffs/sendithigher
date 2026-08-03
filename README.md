@@ -499,3 +499,10 @@ Ideas to continue improving the contract:
 - On-chain traits / randomness  
 - Marketplace listing functions  
 - Governance power based on NFTs  
+
+### Breeding Event
+
+```solidity
+event Bred(address indexed owner, uint256 parent1, uint256 parent2, uint256 childId);
+
+// Emit after successfully creating the new NFT
