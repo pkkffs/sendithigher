@@ -488,3 +488,14 @@ Recommended order inside functions:
 3. **Interactions** (external calls / transfers)  
 
 This greatly reduces reentrancy risks.
+
+### Possible Next Features
+
+Ideas to continue improving the contract:
+
+- Breeding system  
+- Merging NFTs  
+- Seasonal rewards  
+- On-chain traits / randomness  
+- Marketplace listing functions  
+- Governance power based on NFTs  
