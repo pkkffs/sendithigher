@@ -468,3 +468,13 @@ function getGlobalStats() public view returns (
 event RewardsDistributed(uint256 totalDistributed);
 
 // You can emit this occasionally or after important claims
+
+### Staking Pause Event
+
+```solidity
+event StakingPauseChanged(bool isPaused);
+
+function toggleStakingPause() public onlyOwner {
+    stakingPaused = !stakingPaused;
+    emit StakingPauseChanged(stakingPaused);
+}
