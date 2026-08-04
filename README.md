@@ -604,3 +604,12 @@ function cancelOffer(uint256 tokenId) public {
     offers[tokenId].active = false;
     payable(msg.sender).transfer(offer.price);
 }
+
+### Handling Multiple Offers (Idea)
+
+The current structure only stores one offer per token.  
+
+A more advanced version could use:
+
+```solidity
+mapping(uint256 => Offer[]) public tokenOffers;
