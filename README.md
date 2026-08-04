@@ -627,3 +627,14 @@ function getRoyaltyInfo(uint256 salePrice) public view returns (address receiver
 - Use ERC2981 for better compatibility  
 - Allow the owner to update the receiver  
 - Clearly document the royalty policy  
+
+### Next Learning Steps
+
+Possible next topics to explore:
+
+- Using OpenZeppelin contracts  
+- Upgradeable contracts (Proxies)  
+- Chainlink VRF for randomness  
+- ERC20 + NFT interaction  
+- Governance with NFTs  
+- Frontend integration with wagmi / viem / ethers  
