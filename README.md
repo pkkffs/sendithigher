@@ -549,3 +549,22 @@ function getTokenRarityInfo(uint256 tokenId) public view returns (
 function getPlayerScore(address player) public view returns (uint256) {
     return playerScore[player];
 }
+
+### Buy Token Function
+
+```solidity
+function buyToken(uint256 tokenId) public payable {
+    Listing memory item = listings[tokenId];
+    require(item.active, "Listing not active");
+    require(msg.value >= item.price, "Insufficient payment");
+    
+    listings[tokenId].active = false;
+    
+    // Transfer ownership
+    address seller = item.seller;
+    ownerOf[tokenId] = msg.sender;
+    balanceOf[seller] -= 1;
+    balanceOf[msg.sender] += 1;
+    
+    payable(seller).transfer(item.price);
+}
