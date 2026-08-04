@@ -532,3 +532,13 @@ function getPowerScore(uint256 tokenId) public view returns (uint256) {
     Attributes memory attr = tokenAttributes[tokenId];
     return uint256(attr.strength) + attr.agility + attr.intelligence + tokenLevel[tokenId];
 }
+
+### Get Token Rarity Info
+
+```solidity
+function getTokenRarityInfo(uint256 tokenId) public view returns (
+    string memory rarity,
+    uint256 powerScore
+) {
+    return (getRarity(tokenId), getPowerScore(tokenId));
+}
