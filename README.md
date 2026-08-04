@@ -542,3 +542,10 @@ function getTokenRarityInfo(uint256 tokenId) public view returns (
 ) {
     return (getRarity(tokenId), getPowerScore(tokenId));
 }
+
+### Get Player Score
+
+```solidity
+function getPlayerScore(address player) public view returns (uint256) {
+    return playerScore[player];
+}
