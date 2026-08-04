@@ -568,3 +568,15 @@ function buyToken(uint256 tokenId) public payable {
     
     payable(seller).transfer(item.price);
 }
+
+### Sale Event
+
+```solidity
+event TokenSold(
+    uint256 indexed tokenId,
+    address indexed seller,
+    address indexed buyer,
+    uint256 price
+);
+
+// Emit this event after a successful purchase
