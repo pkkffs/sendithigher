@@ -580,3 +580,15 @@ event TokenSold(
 );
 
 // Emit this event after a successful purchase
+
+### Get Listing Info
+
+```solidity
+function getListingInfo(uint256 tokenId) public view returns (
+    address seller,
+    uint256 price,
+    bool active
+) {
+    Listing memory item = listings[tokenId];
+    return (item.seller, item.price, item.active);
+}
