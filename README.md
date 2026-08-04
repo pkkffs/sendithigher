@@ -621,3 +621,9 @@ function getRoyaltyInfo(uint256 salePrice) public view returns (address receiver
     royaltyAmount = (salePrice * royaltyPercentage) / 100;
     return (royaltyReceiver, royaltyAmount);
 }
+### Royalty Best Practices
+
+- Keep royalties between 2.5% and 10%  
+- Use ERC2981 for better compatibility  
+- Allow the owner to update the receiver  
+- Clearly document the royalty policy  
