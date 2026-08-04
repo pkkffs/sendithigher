@@ -592,3 +592,15 @@ function getListingInfo(uint256 tokenId) public view returns (
     Listing memory item = listings[tokenId];
     return (item.seller, item.price, item.active);
 }
+
+### Cancel Offer
+
+```solidity
+function cancelOffer(uint256 tokenId) public {
+    Offer memory offer = offers[tokenId];
+    require(offer.buyer == msg.sender, "Not the buyer");
+    require(offer.active, "Offer not active");
+
+    offers[tokenId].active = false;
+    payable(msg.sender).transfer(offer.price);
+}
