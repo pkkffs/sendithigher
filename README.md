@@ -613,3 +613,11 @@ A more advanced version could use:
 
 ```solidity
 mapping(uint256 => Offer[]) public tokenOffers;
+
+### Royalty Info View
+
+```solidity
+function getRoyaltyInfo(uint256 salePrice) public view returns (address receiver, uint256 royaltyAmount) {
+    royaltyAmount = (salePrice * royaltyPercentage) / 100;
+    return (royaltyReceiver, royaltyAmount);
+}
