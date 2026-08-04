@@ -524,3 +524,11 @@ function getAttributes(uint256 tokenId) public view returns (uint8 strength, uin
     Attributes memory attr = tokenAttributes[tokenId];
     return (attr.strength, attr.agility, attr.intelligence);
 }
+
+### Get Power Score
+
+```solidity
+function getPowerScore(uint256 tokenId) public view returns (uint256) {
+    Attributes memory attr = tokenAttributes[tokenId];
+    return uint256(attr.strength) + attr.agility + attr.intelligence + tokenLevel[tokenId];
+}
