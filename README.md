@@ -709,3 +709,10 @@ function setAllowlist(address user, bool status) public onlyOwner {
 - Can support thousands of addresses  
 - Only the root is stored on-chain  
 - Widely used in real NFT projects  
+
+### Set Hidden URI
+
+```solidity
+function setHiddenURI(string memory _hiddenURI) public onlyOwner {
+    hiddenURI = _hiddenURI;
+}
