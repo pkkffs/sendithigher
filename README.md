@@ -685,3 +685,10 @@ function pause() public onlyOwner {
 function unpause() public onlyOwner {
     _unpause();
 }
+
+### Set Max Per Wallet
+
+```solidity
+function setMaxPerWallet(uint256 newMax) public onlyOwner {
+    maxPerWallet = newMax;
+}
