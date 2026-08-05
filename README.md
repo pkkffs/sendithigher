@@ -702,3 +702,10 @@ function setAllowlist(address user, bool status) public onlyOwner {
     allowlist[user] = status;
     emit AllowlistUpdated(user, status);
 }
+
+### Advantages of Merkle Allowlist
+
+- Much cheaper gas costs  
+- Can support thousands of addresses  
+- Only the root is stored on-chain  
+- Widely used in real NFT projects  
