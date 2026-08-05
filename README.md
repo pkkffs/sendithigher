@@ -753,3 +753,59 @@ function setReservedSupply(uint256 newReserved) public onlyOwner {
     require(newReserved >= reservedMinted, "Cannot be below already minted");
     reservedSupply = newReserved;
 }
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
+contract MarketplaceNFT is ERC721URIStorage, Ownable, ReentrancyGuard {
+    uint256 public nextTokenId;
+    uint256 public mintPrice = 0.02 ether;
+    uint256 public maxSupply = 300;
+    uint256 public marketplaceFee = 2; // 2%
+
+    struct Listing {
+        address seller;
+        uint256 price;
+        bool active;
+    }
+
+    mapping(uint256 => Listing) public listings;
+
+    constructor() ERC721("Marketplace NFT", "MNFT") Ownable(msg.sender) {}
+
+    function mint(string memory uri) external payable nonReentrant {
+        require(nextTokenId < maxSupply, "Max supply reached");
+        require(msg.value >= mintPrice, "Insufficient payment");
+
+        uint256 tokenId = nextTokenId++;
+        _safeMint(msg.sender, tokenId);
+        _setTokenURI(tokenId, uri);
+    }
+
+    function listToken(uint256 tokenId, uint256 price) external {
+        require(ownerOf(tokenId) == msg.sender, "Not owner");
+        require(price > 0, "Invalid price");
+        listings[tokenId] = Listing(msg.sender, price, true);
+    }
+
+    function buyToken(uint256 tokenId) external payable nonReentrant {
+        Listing memory item = listings[tokenId];
+        require(item.active, "Not listed");
+        require(msg.value >= item.price, "Insufficient payment");
+
+        listings[tokenId].active = false;
+
+        uint256 fee = (item.price * marketplaceFee) / 100;
+        uint256 sellerAmount = item.price - fee;
+
+        _transfer(item.seller, msg.sender, tokenId);
+        payable(item.seller).transfer(sellerAmount);
+    }
+
+    function withdraw() external onlyOwner {
+        payable(owner()).transfer(address(this).balance);
+    }
+}
