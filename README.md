@@ -666,3 +666,22 @@ function supportsInterface(bytes4 interfaceId)
 {
     return super.supportsInterface(interfaceId);
 }
+### Admin Functions
+
+```solidity
+function setMintPrice(uint256 newPrice) public onlyOwner {
+    mintPrice = newPrice;
+}
+
+function setMaxSupply(uint256 newMax) public onlyOwner {
+    require(newMax >= nextTokenId, "Cannot reduce below current supply");
+    maxSupply = newMax;
+}
+
+function pause() public onlyOwner {
+    _pause();
+}
+
+function unpause() public onlyOwner {
+    _unpause();
+}
