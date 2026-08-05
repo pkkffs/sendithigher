@@ -644,3 +644,13 @@ Possible next topics to explore:
 Prefer using `_safeMint` instead of `_mint`.
 
 `_safeMint` checks if the receiver is a contract and can handle ERC721 tokens correctly.
+
+### Protecting Functions
+
+```solidity
+function safeMint(address to, string memory uri) public onlyOwner whenNotPaused {
+    uint256 tokenId = nextTokenId;
+    nextTokenId++;
+    _safeMint(to, tokenId);
+    _setTokenURI(tokenId, uri);
+}
