@@ -736,3 +736,13 @@ For large collections, some projects prefer not to use it and instead index even
 Even with a limit, batch minting can be expensive.
 
 Always test gas usage before using large batches on mainnet.
+
+### Phase Change Event
+
+```solidity
+event PhaseChanged(MintPhase newPhase);
+
+function setPhase(MintPhase newPhase) public onlyOwner {
+    currentPhase = newPhase;
+    emit PhaseChanged(newPhase);
+}
