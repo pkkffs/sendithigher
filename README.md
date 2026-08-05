@@ -654,3 +654,15 @@ function safeMint(address to, string memory uri) public onlyOwner whenNotPaused 
     _safeMint(to, tokenId);
     _setTokenURI(tokenId, uri);
 }
+
+### supportsInterface with Royalties
+
+```solidity
+function supportsInterface(bytes4 interfaceId)
+    public
+    view
+    override(ERC721URIStorage, ERC2981)
+    returns (bool)
+{
+    return super.supportsInterface(interfaceId);
+}
