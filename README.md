@@ -716,3 +716,9 @@ function setAllowlist(address user, bool status) public onlyOwner {
 function setHiddenURI(string memory _hiddenURI) public onlyOwner {
     hiddenURI = _hiddenURI;
 }
+
+### Pre-Reveal Experience
+
+Before the reveal, all NFTs usually show the same placeholder image and description.
+
+After the reveal, each token gets its unique traits and artwork.
