@@ -638,3 +638,9 @@ Possible next topics to explore:
 - ERC20 + NFT interaction  
 - Governance with NFTs  
 - Frontend integration with wagmi / viem / ethers  
+
+### OpenZeppelin Minting Best Practice
+
+Prefer using `_safeMint` instead of `_mint`.
+
+`_safeMint` checks if the receiver is a contract and can handle ERC721 tokens correctly.
