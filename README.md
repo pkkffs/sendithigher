@@ -746,3 +746,10 @@ function setPhase(MintPhase newPhase) public onlyOwner {
     currentPhase = newPhase;
     emit PhaseChanged(newPhase);
 }
+### Set Reserved Supply
+
+```solidity
+function setReservedSupply(uint256 newReserved) public onlyOwner {
+    require(newReserved >= reservedMinted, "Cannot be below already minted");
+    reservedSupply = newReserved;
+}
