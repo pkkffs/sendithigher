@@ -722,3 +722,12 @@ function setHiddenURI(string memory _hiddenURI) public onlyOwner {
 Before the reveal, all NFTs usually show the same placeholder image and description.
 
 After the reveal, each token gets its unique traits and artwork.
+
+
+
+### Gas Considerations of Enumerable
+
+`ERC721Enumerable` is very convenient but more expensive in gas.
+
+For large collections, some projects prefer not to use it and instead index events off-chain.
+
