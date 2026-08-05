@@ -692,3 +692,13 @@ function unpause() public onlyOwner {
 function setMaxPerWallet(uint256 newMax) public onlyOwner {
     maxPerWallet = newMax;
 }
+
+### Allowlist Event
+
+```solidity
+event AllowlistUpdated(address indexed user, bool status);
+
+function setAllowlist(address user, bool status) public onlyOwner {
+    allowlist[user] = status;
+    emit AllowlistUpdated(user, status);
+}
