@@ -731,3 +731,8 @@ After the reveal, each token gets its unique traits and artwork.
 
 For large collections, some projects prefer not to use it and instead index events off-chain.
 
+### Batch Mint Gas Warning
+
+Even with a limit, batch minting can be expensive.
+
+Always test gas usage before using large batches on mainnet.
