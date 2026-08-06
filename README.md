@@ -809,3 +809,50 @@ contract MarketplaceNFT is ERC721URIStorage, Ownable, ReentrancyGuard {
         payable(owner()).transfer(address(this).balance);
     }
 }
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract LockedNFT is ERC721URIStorage, Ownable {
+    uint256 public nextTokenId;
+    uint256 public maxSupply = 300;
+    uint256 public lockDuration = 30 days;
+
+    mapping(uint256 => uint256) public unlockTime;
+
+    constructor() ERC721("Locked NFT", "LOCK") Ownable(msg.sender) {}
+
+    function mint(address to, string memory uri) external onlyOwner {
+        require(nextTokenId < maxSupply, "Max supply reached");
+        uint256 tokenId = nextTokenId++;
+        unlockTime[tokenId] = block.timestamp + lockDuration;
+
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, uri);
+    }
+
+    function _update(address to, uint256 tokenId, address auth)
+        internal
+        override
+        returns (address)
+    {
+        address from = _ownerOf(tokenId);
+
+        // Allow minting and burning, but block transfers while locked
+        if (from != address(0) && to != address(0)) {
+            require(block.timestamp >= unlockTime[tokenId], "Token is still locked");
+        }
+
+        return super._update(to, tokenId, auth);
+    }
+
+    function getUnlockTime(uint256 tokenId) external view returns (uint256) {
+        return unlockTime[tokenId];
+    }
+
+    function isUnlocked(uint256 tokenId) external view returns (bool) {
+        return block.timestamp >= unlockTime[tokenId];
+    }
+}
