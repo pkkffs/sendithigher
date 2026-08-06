@@ -1219,3 +1219,54 @@ contract GuildAuction is ReentrancyGuard {
         emit AuctionEnded(highestBidder, highestBid);
     }
 }
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract GuildSubscription {
+    address public owner;
+    uint256 public price;          // precio por periodo
+    uint256 public period;         // duración en segundos (ej: 30 days)
+    
+    mapping(address => uint256) public expiration;
+
+    event Subscribed(address indexed user, uint256 newExpiration);
+    event PriceUpdated(uint256 newPrice);
+    event Withdrawn(address to, uint256 amount);
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
+        _;
+    }
+
+    constructor(uint256 _price, uint256 _period) {
+        owner = msg.sender;
+        price = _price;
+        period = _period;
+    }
+
+    function subscribe() external payable {
+        require(msg.value == price, "Incorrect payment");
+        
+        uint256 currentExp = expiration[msg.sender];
+        uint256 start = currentExp > block.timestamp ? currentExp : block.timestamp;
+        expiration[msg.sender] = start + period;
+
+        emit Subscribed(msg.sender, expiration[msg.sender]);
+    }
+
+    function isActive(address user) external view returns (bool) {
+        return expiration[user] >= block.timestamp;
+    }
+
+    function setPrice(uint256 newPrice) external onlyOwner {
+        price = newPrice;
+        emit PriceUpdated(newPrice);
+    }
+
+    function withdraw(address to) external onlyOwner {
+        uint256 balance = address(this).balance;
+        (bool success, ) = to.call{value: balance}("");
+        require(success, "Withdraw failed");
+        emit Withdrawn(to, balance);
+    }
+}
