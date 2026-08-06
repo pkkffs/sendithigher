@@ -856,3 +856,59 @@ contract LockedNFT is ERC721URIStorage, Ownable {
         return block.timestamp >= unlockTime[tokenId];
     }
 }
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
+contract RaffleNFT is ERC721URIStorage, Ownable, ReentrancyGuard {
+    uint256 public nextTokenId;
+    uint256 public maxSupply = 100;
+    uint256 public ticketPrice = 0.01 ether;
+
+    address[] public participants;
+    bool public raffleOpen = true;
+    bool public winnerSelected;
+    address public winner;
+
+    constructor() ERC721("Raffle NFT", "RAFFLE") Ownable(msg.sender) {}
+
+    function buyTicket() external payable nonReentrant {
+        require(raffleOpen, "Raffle closed");
+        require(msg.value >= ticketPrice, "Insufficient payment");
+        require(nextTokenId < maxSupply, "All tickets sold");
+
+        uint256 tokenId = nextTokenId++;
+        participants.push(msg.sender);
+
+        _safeMint(msg.sender, tokenId);
+        _setTokenURI(tokenId, "");
+    }
+
+    function selectWinner() external onlyOwner {
+        require(!winnerSelected, "Winner already selected");
+        require(participants.length > 0, "No participants");
+
+        uint256 randomIndex = uint256(
+            keccak256(abi.encodePacked(block.timestamp, block.prevrandao, participants.length))
+        ) % participants.length;
+
+        winner = participants[randomIndex];
+        winnerSelected = true;
+        raffleOpen = false;
+    }
+
+    function claimPrize() external nonReentrant {
+        require(winnerSelected, "Winner not selected yet");
+        require(msg.sender == winner, "Not the winner");
+
+        uint256 prize = address(this).balance;
+        payable(winner).transfer(prize);
+    }
+
+    function getParticipantsCount() external view returns (uint256) {
+        return participants.length;
+    }
+}
