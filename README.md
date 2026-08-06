@@ -986,3 +986,61 @@ contract EnglishAuctionNFT is ERC721URIStorage, Ownable, ReentrancyGuard {
         payable(owner()).transfer(address(this).balance);
     }
 }
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract MessagingNFT is ERC721URIStorage, Ownable {
+    uint256 public nextTokenId;
+    uint256 public maxSupply = 300;
+    uint256 public mintPrice = 0.015 ether;
+
+    struct Message {
+        address sender;
+        string content;
+        uint256 timestamp;
+    }
+
+    mapping(uint256 => Message[]) public tokenMessages;
+
+    event NewMessage(uint256 indexed tokenId, address indexed sender, string content);
+
+    constructor() ERC721("Messaging NFT", "MSGNFT") Ownable(msg.sender) {}
+
+    function mint(string memory uri) external payable {
+        require(nextTokenId < maxSupply, "Max supply reached");
+        require(msg.value >= mintPrice, "Insufficient payment");
+
+        uint256 tokenId = nextTokenId++;
+        _safeMint(msg.sender, tokenId);
+        _setTokenURI(tokenId, uri);
+    }
+
+    function sendMessage(uint256 tokenId, string memory content) external {
+        require(_ownerOf(tokenId) != address(0), "Token does not exist");
+        require(bytes(content).length > 0, "Empty message");
+        require(bytes(content).length <= 280, "Message too long");
+
+        tokenMessages[tokenId].push(Message(msg.sender, content, block.timestamp));
+        emit NewMessage(tokenId, msg.sender, content);
+    }
+
+    function getMessagesCount(uint256 tokenId) external view returns (uint256) {
+        return tokenMessages[tokenId].length;
+    }
+
+    function getMessage(uint256 tokenId, uint256 index) external view returns (
+        address sender,
+        string memory content,
+        uint256 timestamp
+    ) {
+        Message memory msgData = tokenMessages[tokenId][index];
+        return (msgData.sender, msgData.content, msgData.timestamp);
+    }
+
+    function withdraw() external onlyOwner {
+        payable(owner()).transfer(address(this).balance);
+    }
+}
