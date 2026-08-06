@@ -1115,3 +1115,42 @@ contract GuildVesting {
         emit TokensReleased(amount);
     }
 }
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract GuildItems is ERC1155, Ownable {
+    // id 0 = Badge de miembro
+    // id 1 = Badge de contributor
+    // id 2 = Item especial, etc.
+
+    mapping(uint256 => string) private _tokenURIs;
+
+    constructor(address initialOwner) 
+        ERC1155("") 
+        Ownable(initialOwner) 
+    {}
+
+    function setURI(uint256 id, string memory newuri) external onlyOwner {
+        _tokenURIs[id] = newuri;
+    }
+
+    function uri(uint256 id) public view override returns (string memory) {
+        return _tokenURIs[id];
+    }
+
+    function mint(address to, uint256 id, uint256 amount) external onlyOwner {
+        _mint(to, id, amount, "");
+    }
+
+    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts) external onlyOwner {
+        _mintBatch(to, ids, amounts, "");
+    }
+
+    function burn(address from, uint256 id, uint256 amount) external {
+        require(from == msg.sender || msg.sender == owner(), "Not authorized");
+        _burn(from, id, amount);
+    }
+}
