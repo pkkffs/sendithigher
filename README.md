@@ -20,8 +20,6 @@ These are the main reasons I’m focusing on Base.
 - Block explorer  
 - Official documentation  
 
-Getting familiar with the basic setup.
-
 ### Adding Increment Function
 
 ```solidity
