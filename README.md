@@ -912,3 +912,77 @@ contract RaffleNFT is ERC721URIStorage, Ownable, ReentrancyGuard {
         return participants.length;
     }
 }
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
+contract EnglishAuctionNFT is ERC721URIStorage, Ownable, ReentrancyGuard {
+    uint256 public nextTokenId;
+    uint256 public maxSupply = 50;
+
+    struct Auction {
+        address highestBidder;
+        uint256 highestBid;
+        uint256 endTime;
+        bool settled;
+        bool active;
+    }
+
+    mapping(uint256 => Auction) public auctions;
+    mapping(uint256 => mapping(address => uint256)) public bids;
+
+    constructor() ERC721("English Auction NFT", "AUCTION") Ownable(msg.sender) {}
+
+    function mintAndStartAuction(string memory uri, uint256 duration) external onlyOwner {
+        require(nextTokenId < maxSupply, "Max supply reached");
+
+        uint256 tokenId = nextTokenId++;
+        _safeMint(address(this), tokenId); // Contract holds the NFT during auction
+        _setTokenURI(tokenId, uri);
+
+        auctions[tokenId] = Auction({
+            highestBidder: address(0),
+            highestBid: 0,
+            endTime: block.timestamp + duration,
+            settled: false,
+            active: true
+        });
+    }
+
+    function bid(uint256 tokenId) external payable nonReentrant {
+        Auction storage auction = auctions[tokenId];
+        require(auction.active, "Auction not active");
+        require(block.timestamp < auction.endTime, "Auction ended");
+        require(msg.value > auction.highestBid, "Bid too low");
+
+        // Refund previous highest bidder
+        if (auction.highestBidder != address(0)) {
+            payable(auction.highestBidder).transfer(auction.highestBid);
+        }
+
+        auction.highestBidder = msg.sender;
+        auction.highestBid = msg.value;
+        bids[tokenId][msg.sender] = msg.value;
+    }
+
+    function settleAuction(uint256 tokenId) external nonReentrant {
+        Auction storage auction = auctions[tokenId];
+        require(auction.active, "Auction not active");
+        require(block.timestamp >= auction.endTime, "Auction not ended");
+        require(!auction.settled, "Already settled");
+
+        auction.settled = true;
+        auction.active = false;
+
+        if (auction.highestBidder != address(0)) {
+            _transfer(address(this), auction.highestBidder, tokenId);
+        }
+    }
+
+    function withdraw() external onlyOwner {
+        payable(owner()).transfer(address(this).balance);
+    }
+}
