@@ -1066,3 +1066,52 @@ contract GuildMembership is ERC721, Ownable {
         _burn(tokenId);
     }
 }
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+
+contract GuildVesting {
+    using SafeERC20 for IERC20;
+
+    IERC20 public immutable token;
+    address public immutable beneficiary;
+    uint256 public immutable start;
+    uint256 public immutable duration;
+    uint256 public immutable totalAmount;
+    uint256 public released;
+
+    event TokensReleased(uint256 amount);
+
+    constructor(
+        address _token,
+        address _beneficiary,
+        uint256 _start,
+        uint256 _duration,
+        uint256 _totalAmount
+    ) {
+        token = IERC20(_token);
+        beneficiary = _beneficiary;
+        start = _start;
+        duration = _duration;
+        totalAmount = _totalAmount;
+    }
+
+    function releasable() public view returns (uint256) {
+        if (block.timestamp < start) return 0;
+        if (block.timestamp >= start + duration) {
+            return totalAmount - released;
+        }
+        uint256 vested = (totalAmount * (block.timestamp - start)) / duration;
+        return vested - released;
+    }
+
+    function release() external {
+        uint256 amount = releasable();
+        require(amount > 0, "Nothing to release");
+        released += amount;
+        token.safeTransfer(beneficiary, amount);
+        emit TokensReleased(amount);
+    }
+}
