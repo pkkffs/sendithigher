@@ -1154,3 +1154,68 @@ contract GuildItems is ERC1155, Ownable {
         _burn(from, id, amount);
     }
 }
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+contract GuildAuction is ReentrancyGuard {
+    IERC721 public immutable nft;
+    uint256 public immutable tokenId;
+    address public immutable seller;
+    uint256 public immutable endTime;
+    uint256 public highestBid;
+    address public highestBidder;
+    bool public ended;
+
+    mapping(address => uint256) public bids;
+
+    event BidPlaced(address indexed bidder, uint256 amount);
+    event AuctionEnded(address winner, uint256 amount);
+
+    constructor(address _nft, uint256 _tokenId, uint256 duration) {
+        nft = IERC721(_nft);
+        tokenId = _tokenId;
+        seller = msg.sender;
+        endTime = block.timestamp + duration;
+        nft.transferFrom(msg.sender, address(this), _tokenId);
+    }
+
+    function bid() external payable nonReentrant {
+        require(block.timestamp < endTime, "Auction ended");
+        require(msg.value > highestBid, "Bid too low");
+
+        if (highestBidder != address(0)) {
+            bids[highestBidder] += highestBid; // reembolso pendiente
+        }
+
+        highestBidder = msg.sender;
+        highestBid = msg.value;
+        emit BidPlaced(msg.sender, msg.value);
+    }
+
+    function withdraw() external nonReentrant {
+        uint256 amount = bids[msg.sender];
+        require(amount > 0, "No funds");
+        bids[msg.sender] = 0;
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Withdraw failed");
+    }
+
+    function endAuction() external nonReentrant {
+        require(block.timestamp >= endTime, "Not yet ended");
+        require(!ended, "Already ended");
+        ended = true;
+
+        if (highestBidder != address(0)) {
+            nft.transferFrom(address(this), highestBidder, tokenId);
+            (bool success, ) = seller.call{value: highestBid}("");
+            require(success, "Transfer to seller failed");
+        } else {
+            nft.transferFrom(address(this), seller, tokenId);
+        }
+
+        emit AuctionEnded(highestBidder, highestBid);
+    }
+}
