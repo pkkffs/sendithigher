@@ -1320,3 +1320,73 @@ contract GuildRoles {
         superAdmin = newAdmin;
     }
 }
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract GuildCrowdfunding {
+    address public creator;
+    address public beneficiary;
+    uint256 public goal;
+    uint256 public deadline;
+    uint256 public totalRaised;
+    bool public claimed;
+    bool public failed;
+
+    mapping(address => uint256) public contributions;
+
+    event Contributed(address indexed user, uint256 amount);
+    event GoalReached(uint256 total);
+    event Claimed(uint256 amount);
+    event Refunded(address indexed user, uint256 amount);
+
+    constructor(address _beneficiary, uint256 _goal, uint256 durationInSeconds) {
+        creator = msg.sender;
+        beneficiary = _beneficiary;
+        goal = _goal;
+        deadline = block.timestamp + durationInSeconds;
+    }
+
+    function contribute() external payable {
+        require(block.timestamp < deadline, "Campaign ended");
+        require(!failed, "Campaign failed");
+        require(msg.value > 0, "Must send ETH");
+
+        contributions[msg.sender] += msg.value;
+        totalRaised += msg.value;
+        emit Contributed(msg.sender, msg.value);
+
+        if (totalRaised >= goal) {
+            emit GoalReached(totalRaised);
+        }
+    }
+
+    function claim() external {
+        require(msg.sender == creator || msg.sender == beneficiary, "Not authorized");
+        require(block.timestamp >= deadline, "Too early");
+        require(totalRaised >= goal, "Goal not reached");
+        require(!claimed, "Already claimed");
+
+        claimed = true;
+        uint256 amount = address(this).balance;
+        (bool success, ) = beneficiary.call{value: amount}("");
+        require(success, "Transfer failed");
+        emit Claimed(amount);
+    }
+
+    function refund() external {
+        require(block.timestamp >= deadline, "Too early");
+        require(totalRaised < goal, "Goal was reached");
+        uint256 amount = contributions[msg.sender];
+        require(amount > 0, "Nothing to refund");
+
+        contributions[msg.sender] = 0;
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Refund failed");
+        emit Refunded(msg.sender, amount);
+    }
+
+    function getProgress() external view returns (uint256 raised, uint256 target, uint256 timeLeft) {
+        uint256 remaining = block.timestamp >= deadline ? 0 : deadline - block.timestamp;
+        return (totalRaised, goal, remaining);
+    }
+}
